@@ -339,7 +339,8 @@ p {
   overflow: hidden;
 }
 
-.hero-media img {
+.hero-media img,
+.hero-media video {
   position: absolute;
   top: 20px;
   right: 0;
@@ -348,6 +349,10 @@ p {
   object-fit: cover;
   object-position: center right;
   opacity: 0.96;
+}
+
+.hero-media video {
+  background: #050606 url("/assets/hero-cinematic-wide.jpg") center right / cover no-repeat;
 }
 
 .hero-media::before,
@@ -1069,7 +1074,8 @@ p {
     padding: 150px 0 36px;
   }
 
-  .hero-media img {
+  .hero-media img,
+  .hero-media video {
     top: 76px;
     right: 0;
     width: min(100vw, 1857px);
@@ -1492,7 +1498,8 @@ p {
     padding-top: 106px;
   }
 
-  .hero-media img {
+  .hero-media img,
+  .hero-media video {
     top: 74px;
     right: -120px;
     width: 680px;
