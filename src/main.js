@@ -10,6 +10,12 @@ const setHeaderState = () => {
   header.classList.toggle('is-scrolled', window.scrollY > 18);
 };
 
+const setActiveLink = (id) => {
+  navLinks.forEach((link) => {
+    link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
+  });
+};
+
 const closeMenu = () => {
   nav.classList.remove('is-open');
   menuToggle.classList.remove('is-open');
@@ -47,10 +53,7 @@ const activeObserver = new IntersectionObserver(
 
     if (!visible) return;
 
-    navLinks.forEach((link) => {
-      const isActive = link.getAttribute('href') === `#${visible.target.id}`;
-      link.classList.toggle('is-active', isActive);
-    });
+    setActiveLink(window.scrollY < 80 ? 'home' : visible.target.id);
   },
   {
     rootMargin: '-25% 0px -58% 0px',
@@ -59,5 +62,9 @@ const activeObserver = new IntersectionObserver(
 );
 
 sections.forEach((section) => activeObserver.observe(section));
-window.addEventListener('scroll', setHeaderState, { passive: true });
+window.addEventListener('scroll', () => {
+  setHeaderState();
+  if (window.scrollY < 80) setActiveLink('home');
+}, { passive: true });
 setHeaderState();
+setActiveLink('home');
