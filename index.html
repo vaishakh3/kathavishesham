@@ -8,6 +8,13 @@
       content="Katha Vishesham is an AI video production studio creating cinematic videos for birthdays, memories, weddings, mythological stories, theatre ads and brand films."
     />
     <meta name="theme-color" content="#070706" />
+    <meta property="og:title" content="Katha Vishesham | AI Video Production Studio" />
+    <meta
+      property="og:description"
+      content="Premium AI-assisted cinematic storytelling for memories, weddings, mythological stories, theatre ads and brand films."
+    />
+    <meta property="og:image" content="/assets/cinematic-storytelling.png" />
+    <meta property="og:type" content="website" />
     <title>Katha Vishesham | AI Video Production Studio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,6 +22,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap"
       rel="stylesheet"
     />
+    <link rel="preload" as="image" href="/assets/cinematic-storytelling.png" />
     <link rel="stylesheet" href="/src/styles.css" />
   </head>
   <body>
@@ -28,7 +36,7 @@
           </span>
         </a>
 
-        <nav class="main-nav" data-nav aria-label="Primary navigation">
+        <nav class="main-nav" id="primary-navigation" data-nav aria-label="Primary navigation">
           <a href="#home">Home</a>
           <a href="#services">Services</a>
           <a href="#portfolio">Portfolio</a>
@@ -40,7 +48,14 @@
 
         <a class="nav-cta" href="https://wa.me/919207119906" target="_blank" rel="noreferrer">Book a Project</a>
 
-        <button class="menu-toggle" type="button" data-menu-toggle aria-label="Open menu" aria-expanded="false">
+        <button
+          class="menu-toggle"
+          type="button"
+          data-menu-toggle
+          aria-label="Open menu"
+          aria-expanded="false"
+          aria-controls="primary-navigation"
+        >
           <span></span>
           <span></span>
         </button>
@@ -101,7 +116,7 @@
               target="_blank"
               rel="noreferrer"
             >
-              <img src="/assets/cinematic-storytelling.png" alt="Cinematic birthday celebration video preview" loading="lazy" />
+              <img src="/assets/work-birthday.jpg" alt="Cinematic birthday celebration video preview" loading="lazy" />
               <span class="work-tint birthday"></span>
               <span class="play-button" aria-hidden="true"></span>
               <span class="work-copy">
@@ -118,7 +133,7 @@
               target="_blank"
               rel="noreferrer"
             >
-              <img src="/assets/cinematic-storytelling.png" alt="Cinematic Indian wedding highlight video preview" loading="lazy" />
+              <img src="/assets/work-wedding.jpg" alt="Cinematic Indian wedding highlight video preview" loading="lazy" />
               <span class="work-tint wedding"></span>
               <span class="play-button" aria-hidden="true"></span>
               <span class="work-copy">
@@ -135,7 +150,7 @@
               target="_blank"
               rel="noreferrer"
             >
-              <img src="/assets/cinematic-storytelling.png" alt="Epic mythological story video preview" loading="lazy" />
+              <img src="/assets/work-mythology.jpg" alt="Epic mythological story video preview" loading="lazy" />
               <span class="work-tint mythology"></span>
               <span class="play-button" aria-hidden="true"></span>
               <span class="work-copy">
@@ -152,7 +167,7 @@
               target="_blank"
               rel="noreferrer"
             >
-              <img src="/assets/cinematic-storytelling.png" alt="Theatre advertisement cinematic brand film preview" loading="lazy" />
+              <img src="/assets/work-theatre.jpg" alt="Theatre advertisement cinematic brand film preview" loading="lazy" />
               <span class="work-tint theatre"></span>
               <span class="play-button" aria-hidden="true"></span>
               <span class="work-copy">
@@ -169,7 +184,7 @@
               target="_blank"
               rel="noreferrer"
             >
-              <img src="/assets/cinematic-storytelling.png" alt="Nostalgic family memories and brand film preview" loading="lazy" />
+              <img src="/assets/work-memories.jpg" alt="Nostalgic family memories and brand film preview" loading="lazy" />
               <span class="work-tint memories"></span>
               <span class="play-button" aria-hidden="true"></span>
               <span class="work-copy">
