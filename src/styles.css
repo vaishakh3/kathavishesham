@@ -461,19 +461,19 @@ p {
   margin-top: 24px;
 }
 
-.trust-row span {
+.trust-row > .trust-item {
   position: relative;
   display: grid;
   min-height: 36px;
-  grid-template-columns: 28px 1fr;
+  grid-template-columns: 32px 1fr;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   color: #c7bcae;
   font-size: 0.76rem;
   line-height: 1.2;
 }
 
-.trust-row span:not(:last-child)::after {
+.trust-row > .trust-item:not(:last-child)::after {
   position: absolute;
   top: 7px;
   right: -9px;
@@ -483,16 +483,24 @@ p {
   background: var(--border);
 }
 
-.trust-row span::before {
+.trust-row .ui-icon {
   display: grid;
-  width: 24px;
-  height: 24px;
-  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 5px;
   border: 1px solid var(--gold);
   border-radius: 4px;
   color: var(--gold);
-  content: attr(data-icon);
-  font-size: 1rem;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  background: rgba(5, 6, 6, 0.28);
+}
+
+.trust-row > .trust-item > span {
+  display: block;
 }
 
 .portfolio,
@@ -1057,16 +1065,29 @@ p {
 }
 
 .line-icon {
-  width: auto;
-  height: auto;
-  margin-bottom: 7px;
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  margin: 0 auto 7px;
   border: 0;
   background: transparent;
   box-shadow: none;
   clip-path: none;
   color: var(--gold-light);
-  font-size: 1.35rem;
   text-shadow: 0 0 12px rgba(224, 183, 90, 0.2);
+}
+
+.line-icon svg {
+  display: block;
+  width: 22px;
+  height: 22px;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .service-card:nth-child(even) .line-icon {
@@ -1280,7 +1301,11 @@ p {
 
   .line-icon {
     margin-bottom: 9px;
-    font-size: 1.55rem;
+  }
+
+  .line-icon svg {
+    width: 25px;
+    height: 25px;
   }
 
   .price-card {
@@ -1920,8 +1945,25 @@ p {
 
   .hero-media::before {
     background:
-      linear-gradient(90deg, #050606 0%, rgba(5, 6, 6, 0.86) 50%, rgba(5, 6, 6, 0.25) 100%),
-      linear-gradient(180deg, rgba(5, 6, 6, 0.1), #050606 100%);
+      linear-gradient(90deg, rgba(5, 6, 6, 0.84) 0%, rgba(5, 6, 6, 0.62) 54%, rgba(5, 6, 6, 0.18) 100%),
+      linear-gradient(180deg, rgba(5, 6, 6, 0.22), rgba(5, 6, 6, 0.22) 42%, #050606 100%);
+  }
+
+  .hero-copy {
+    position: relative;
+    width: min(100%, 430px);
+    padding: 16px 14px 18px;
+    border: 1px solid rgba(224, 183, 90, 0.18);
+    border-radius: 8px;
+    background: linear-gradient(115deg, rgba(5, 6, 6, 0.54), rgba(5, 6, 6, 0.18));
+    box-shadow: inset 0 0 0 1px rgba(255, 225, 158, 0.025), 0 18px 46px rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(5px);
+  }
+
+  .hero-copy .eyebrow,
+  .hero-copy h1,
+  .hero-text {
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.72);
   }
 
   h1 {
@@ -1930,11 +1972,34 @@ p {
   }
 
   .trust-row {
-    grid-template-columns: 1fr;
+    max-width: none;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 18px;
   }
 
-  .trust-row span:not(:last-child)::after {
+  .trust-row > .trust-item {
+    min-height: 44px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 6px;
+    padding: 8px 5px;
+    border: 1px solid rgba(224, 183, 90, 0.28);
+    border-radius: 8px;
+    background: rgba(5, 6, 6, 0.48);
+    font-size: 0.62rem;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  .trust-row > .trust-item:not(:last-child)::after {
     display: none;
+  }
+
+  .trust-row .ui-icon {
+    width: 28px;
+    height: 28px;
+    padding: 5px;
   }
 
   .portfolio-layout,
@@ -2013,6 +2078,13 @@ p {
   .service-grid,
   .pricing-grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+
+  .service-card:last-child,
+  .price-card:last-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: calc((100% - 4px) / 2);
   }
 
   .timeline {
@@ -2212,13 +2284,37 @@ p {
   }
 
   .footer-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px 18px;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .site-footer h3 {
+    margin-bottom: 8px;
+    font-size: 0.98rem;
+  }
+
+  .site-footer a:not(.brand):not(.social-row a) {
+    margin-bottom: 6px;
+    font-size: 0.72rem;
+  }
+
+  .footer-brand p {
+    max-width: 100%;
   }
 
   .service-grid,
   .pricing-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
+  }
+
+  .service-card:last-child,
+  .price-card:last-child {
+    width: calc((100% - 6px) / 2);
   }
 
   .service-card {
