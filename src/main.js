@@ -2,11 +2,15 @@ const header = document.querySelector('[data-header]');
 const menuToggle = document.querySelector('[data-menu-toggle]');
 const nav = document.querySelector('[data-nav]');
 const navLinks = [...document.querySelectorAll('.main-nav a')];
-const sections = [...document.querySelectorAll('.section-anchor')];
+const sections = navLinks
+  .map((link) => document.querySelector(link.getAttribute('href')))
+  .filter(Boolean);
 const filterButtons = [...document.querySelectorAll('[data-filter]')];
 const workCards = [...document.querySelectorAll('[data-category]')];
 const heroVideo = document.querySelector('[data-hero-video]');
 const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+let clickedNavTarget = null;
+let clickedNavTimer;
 
 const setHeaderState = () => {
   header.classList.toggle('is-scrolled', window.scrollY > 18);
@@ -24,6 +28,19 @@ const setActiveLink = (id) => {
   });
 };
 
+const getCurrentSectionId = () => {
+  if (window.scrollY < 80) return 'home';
+
+  const marker = 96;
+  return sections.reduce(
+    (closest, section) => {
+      const distance = Math.abs(section.getBoundingClientRect().top - marker);
+      return distance < closest.distance ? { id: section.id, distance } : closest;
+    },
+    { id: 'home', distance: Infinity }
+  ).id;
+};
+
 const closeMenu = () => {
   nav.classList.remove('is-open');
   menuToggle.classList.remove('is-open');
@@ -39,7 +56,18 @@ menuToggle.addEventListener('click', () => {
 });
 
 navLinks.forEach((link) => {
-  link.addEventListener('click', closeMenu);
+  link.addEventListener('click', () => {
+    const targetId = link.getAttribute('href')?.slice(1);
+    if (targetId) {
+      clickedNavTarget = targetId;
+      clearTimeout(clickedNavTimer);
+      clickedNavTimer = setTimeout(() => {
+        clickedNavTarget = null;
+      }, 1400);
+      setActiveLink(targetId);
+    }
+    closeMenu();
+  });
 });
 
 filterButtons.forEach((button) => {
@@ -71,26 +99,13 @@ const syncHeroMotion = () => {
   }
 };
 
-const activeObserver = new IntersectionObserver(
-  (entries) => {
-    const visible = entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-    if (!visible) return;
-
-    setActiveLink(window.scrollY < 80 ? 'home' : visible.target.id);
-  },
-  {
-    rootMargin: '-25% 0px -58% 0px',
-    threshold: [0.15, 0.3, 0.55]
-  }
-);
-
-sections.forEach((section) => activeObserver.observe(section));
 window.addEventListener('scroll', () => {
   setHeaderState();
-  if (window.scrollY < 80) setActiveLink('home');
+  if (clickedNavTarget) {
+    setActiveLink(clickedNavTarget);
+    return;
+  }
+  setActiveLink(getCurrentSectionId());
 }, { passive: true });
 if (motionQuery.addEventListener) {
   motionQuery.addEventListener('change', syncHeroMotion);
