@@ -67,7 +67,17 @@
     <main>
       <section id="home" class="hero section-anchor">
         <div class="hero-media" aria-hidden="true">
-          <video autoplay muted loop playsinline preload="metadata" poster="/assets/hero-cinematic-wide.jpg">
+          <video
+            autoplay
+            muted
+            loop
+            playsinline
+            webkit-playsinline
+            preload="auto"
+            poster="/assets/hero-cinematic-wide.jpg"
+            tabindex="-1"
+            data-hero-video
+          >
             <source src="/assets/hero-cinematic-animated.mp4" type="video/mp4" />
           </video>
           <span class="hero-vignette"></span>

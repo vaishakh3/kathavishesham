@@ -5,7 +5,7 @@ const navLinks = [...document.querySelectorAll('.main-nav a')];
 const sections = [...document.querySelectorAll('.section-anchor')];
 const filterButtons = [...document.querySelectorAll('[data-filter]')];
 const workCards = [...document.querySelectorAll('[data-category]')];
-const heroVideo = document.querySelector('.hero-media video');
+const heroVideo = document.querySelector('[data-hero-video]');
 const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 const setHeaderState = () => {
@@ -14,7 +14,13 @@ const setHeaderState = () => {
 
 const setActiveLink = (id) => {
   navLinks.forEach((link) => {
-    link.classList.toggle('is-active', link.getAttribute('href') === `#${id}`);
+    const isActive = link.getAttribute('href') === `#${id}`;
+    link.classList.toggle('is-active', isActive);
+    if (isActive) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
   });
 };
 
@@ -49,6 +55,12 @@ filterButtons.forEach((button) => {
 
 const syncHeroMotion = () => {
   if (!heroVideo) return;
+
+  heroVideo.muted = true;
+  heroVideo.defaultMuted = true;
+  heroVideo.playsInline = true;
+  heroVideo.controls = false;
+  heroVideo.removeAttribute('controls');
 
   if (motionQuery.matches) {
     heroVideo.pause();
@@ -85,6 +97,14 @@ if (motionQuery.addEventListener) {
 } else if (motionQuery.addListener) {
   motionQuery.addListener(syncHeroMotion);
 }
+
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) syncHeroMotion();
+});
+
+window.addEventListener('pageshow', syncHeroMotion);
+window.addEventListener('pointerdown', syncHeroMotion, { once: true, passive: true });
+window.addEventListener('touchstart', syncHeroMotion, { once: true, passive: true });
 setHeaderState();
 setActiveLink('home');
 syncHeroMotion();

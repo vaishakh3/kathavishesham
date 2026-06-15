@@ -365,10 +365,21 @@ p {
   object-fit: cover;
   object-position: center right;
   opacity: 0.96;
+  pointer-events: none;
+  user-select: none;
 }
 
 .hero-media video {
   background: #050606 url("/assets/hero-cinematic-wide.jpg") center right / cover no-repeat;
+}
+
+.hero-media video::-webkit-media-controls,
+.hero-media video::-webkit-media-controls-panel,
+.hero-media video::-webkit-media-controls-start-playback-button,
+.hero-media video::-webkit-media-controls-play-button {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none;
 }
 
 .hero-media::before,
@@ -1512,7 +1523,7 @@ p {
   border: 1px solid var(--gold);
   border-radius: 50%;
   color: #fff;
-  content: "⌕";
+  content: "☎";
   font-family: var(--sans);
   font-size: 1rem;
 }
@@ -1661,7 +1672,12 @@ p {
 
   .nav-shell {
     min-height: 72px;
-    grid-template-columns: auto 1fr auto;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+
+  .brand {
+    overflow: hidden;
   }
 
   .brand-mark {
@@ -1685,16 +1701,20 @@ p {
     display: grid;
     max-height: 0;
     justify-content: stretch;
+    justify-self: stretch;
     gap: 0;
+    padding: 0;
     overflow: hidden;
-    border: 1px solid transparent;
+    border: 0 solid transparent;
     border-radius: 8px;
     background: rgba(7, 7, 6, 0.96);
-    transition: max-height 220ms ease, border-color 220ms ease;
+    transition: max-height 220ms ease, border-color 220ms ease, padding 220ms ease;
   }
 
   .main-nav.is-open {
     max-height: 420px;
+    padding: 5px;
+    border-width: 1px;
     border-color: var(--border-soft);
   }
 
@@ -1713,6 +1733,7 @@ p {
 
   .menu-toggle {
     display: block;
+    justify-self: end;
   }
 
   .hero {
