@@ -5,6 +5,8 @@ const navLinks = [...document.querySelectorAll('.main-nav a')];
 const sections = [...document.querySelectorAll('.section-anchor')];
 const filterButtons = [...document.querySelectorAll('[data-filter]')];
 const workCards = [...document.querySelectorAll('[data-category]')];
+const heroVideo = document.querySelector('.hero-media video');
+const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
 
 const setHeaderState = () => {
   header.classList.toggle('is-scrolled', window.scrollY > 18);
@@ -45,6 +47,18 @@ filterButtons.forEach((button) => {
   });
 });
 
+const syncHeroMotion = () => {
+  if (!heroVideo) return;
+
+  if (motionQuery.matches) {
+    heroVideo.pause();
+    heroVideo.removeAttribute('autoplay');
+  } else {
+    heroVideo.setAttribute('autoplay', '');
+    heroVideo.play().catch(() => {});
+  }
+};
+
 const activeObserver = new IntersectionObserver(
   (entries) => {
     const visible = entries
@@ -66,5 +80,11 @@ window.addEventListener('scroll', () => {
   setHeaderState();
   if (window.scrollY < 80) setActiveLink('home');
 }, { passive: true });
+if (motionQuery.addEventListener) {
+  motionQuery.addEventListener('change', syncHeroMotion);
+} else if (motionQuery.addListener) {
+  motionQuery.addListener(syncHeroMotion);
+}
 setHeaderState();
 setActiveLink('home');
+syncHeroMotion();

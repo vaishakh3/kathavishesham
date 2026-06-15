@@ -156,14 +156,15 @@ p {
   position: fixed;
   inset: 0 0 auto;
   z-index: 50;
-  background: linear-gradient(180deg, rgba(4, 5, 5, 0.92), rgba(4, 5, 5, 0.2));
+  border-bottom: 1px solid rgba(198, 146, 44, 0.08);
+  background: linear-gradient(180deg, rgba(4, 5, 5, 0.94), rgba(4, 5, 5, 0.52) 72%, rgba(4, 5, 5, 0.12));
   backdrop-filter: blur(12px);
   transition: background 180ms ease, border-color 180ms ease;
 }
 
 .site-header.is-scrolled {
-  border-bottom: 1px solid var(--border-soft);
-  background: rgba(4, 5, 5, 0.88);
+  border-bottom-color: var(--border-soft);
+  background: rgba(4, 5, 5, 0.9);
 }
 
 .nav-shell {
@@ -214,21 +215,32 @@ p {
 .main-nav {
   display: flex;
   justify-content: center;
-  gap: 32px;
+  justify-self: center;
+  gap: 4px;
+  padding: 5px;
+  border: 1px solid rgba(198, 146, 44, 0.18);
+  border-radius: 999px;
+  background: rgba(5, 6, 6, 0.34);
+  box-shadow: inset 0 0 0 1px rgba(255, 225, 158, 0.02);
 }
 
 .main-nav a {
   position: relative;
+  display: grid;
+  min-height: 28px;
+  place-items: center;
+  padding: 0 12px;
+  border-radius: 999px;
   color: #efe8dd;
   font-size: 0.78rem;
   font-weight: 600;
-  transition: color 160ms ease;
+  transition: color 160ms ease, background 160ms ease;
 }
 
 .main-nav a::after {
   position: absolute;
   right: 0;
-  bottom: -12px;
+  bottom: -8px;
   left: 0;
   height: 2px;
   content: "";
@@ -240,6 +252,7 @@ p {
 
 .main-nav a:hover,
 .main-nav a.is-active {
+  background: rgba(198, 146, 44, 0.11);
   color: var(--gold-light);
 }
 
@@ -263,10 +276,13 @@ p {
 
 .nav-cta {
   gap: 14px;
-  min-width: 152px;
+  min-width: 158px;
+  min-height: 42px;
   border: 1px solid var(--gold-light);
   border-radius: 999px;
+  background: rgba(10, 10, 8, 0.34);
   color: var(--gold-light);
+  box-shadow: inset 0 0 0 1px rgba(255, 225, 158, 0.08), 0 14px 40px rgba(0, 0, 0, 0.22);
 }
 
 .nav-cta span {
@@ -391,19 +407,22 @@ p {
 .contact-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 14px;
+  gap: 16px;
 }
 
 .btn {
   gap: 11px;
-  min-width: 146px;
-  padding: 0 18px;
+  min-width: 158px;
+  min-height: 44px;
+  padding: 0 22px;
   border: 1px solid transparent;
+  border-radius: 999px;
 }
 
 .btn-primary {
   background: linear-gradient(180deg, #ecc56e, #d59e45);
   color: #100b04;
+  box-shadow: 0 14px 34px rgba(198, 146, 44, 0.18), inset 0 1px 0 rgba(255, 244, 206, 0.42);
 }
 
 .btn-primary::after {
@@ -412,9 +431,10 @@ p {
 }
 
 .btn-secondary {
-  border-color: var(--border);
-  background: rgba(13, 13, 10, 0.45);
+  border-color: rgba(224, 183, 90, 0.52);
+  background: rgba(13, 13, 10, 0.58);
   color: #d6c9b6;
+  box-shadow: inset 0 0 0 1px rgba(255, 225, 158, 0.03);
 }
 
 .btn-secondary::before {
@@ -472,8 +492,8 @@ p {
 }
 
 .portfolio {
-  padding-top: 24px;
-  padding-bottom: 22px;
+  padding-top: 34px;
+  padding-bottom: 34px;
 }
 
 .services {
@@ -493,8 +513,8 @@ p {
 
 .portfolio-layout {
   display: grid;
-  grid-template-columns: 190px 1fr;
-  gap: 28px;
+  grid-template-columns: 214px 1fr;
+  gap: 34px;
   align-items: start;
 }
 
@@ -519,10 +539,10 @@ p {
 }
 
 .portfolio-intro p:not(.eyebrow) {
-  max-width: 142px;
-  margin: 0 0 24px;
+  max-width: 172px;
+  margin: 0 0 26px;
   color: #b5aa9d;
-  font-size: 0.82rem;
+  font-size: 0.86rem;
 }
 
 .filter-row {
@@ -563,10 +583,32 @@ p {
   color: var(--gold-light);
 }
 
+.portfolio-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 36px;
+  margin-top: 22px;
+  padding: 0 15px;
+  border: 1px solid rgba(224, 183, 90, 0.5);
+  border-radius: 999px;
+  background: rgba(198, 146, 44, 0.1);
+  color: var(--gold-light);
+  font-size: 0.74rem;
+  font-weight: 800;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.portfolio-cta:hover {
+  border-color: rgba(224, 183, 90, 0.82);
+  background: rgba(198, 146, 44, 0.16);
+  transform: translateY(-1px);
+}
+
 .works-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
-  gap: 8px;
+  gap: 12px;
   min-width: 0;
 }
 
@@ -574,7 +616,7 @@ p {
   position: relative;
   display: grid;
   min-width: 0;
-  min-height: 174px;
+  min-height: 214px;
   grid-column: span 2;
   overflow: hidden;
   border: 1px solid var(--border);
@@ -585,7 +627,7 @@ p {
 }
 
 .work-card-wide {
-  min-height: 146px;
+  min-height: 184px;
   grid-column: span 3;
 }
 
@@ -598,7 +640,7 @@ p {
   inset: 0 0 auto;
   z-index: -2;
   width: 100%;
-  height: calc(100% - 49px);
+  height: calc(100% - 58px);
   object-fit: cover;
   object-position: center;
   opacity: 0.96;
@@ -606,14 +648,14 @@ p {
 }
 
 .work-card-wide img {
-  height: calc(100% - 47px);
+  height: calc(100% - 56px);
 }
 
 .work-card::before {
   position: absolute;
   inset: auto 0 0;
   z-index: -1;
-  height: 57px;
+  height: 66px;
   content: "";
   background: linear-gradient(180deg, rgba(11, 11, 9, 0.82), rgba(11, 11, 9, 0.98));
 }
@@ -634,7 +676,7 @@ p {
 
 .work-copy {
   align-self: end;
-  padding: 0 12px 10px;
+  padding: 0 14px 12px;
 }
 
 .work-copy small,
@@ -654,15 +696,15 @@ p {
   margin: 0 0 5px;
   color: #f2eee6;
   font-family: var(--sans);
-  font-size: 0.86rem;
+  font-size: 0.96rem;
   font-weight: 700;
   line-height: 1.15;
 }
 
 .work-copy em {
   position: absolute;
-  right: 12px;
-  bottom: 12px;
+  right: 14px;
+  bottom: 14px;
   color: #b9ada0;
   font-size: 0.56rem;
   font-style: normal;
@@ -1105,6 +1147,77 @@ p {
   .hero-text {
     max-width: 760px;
     font-size: 1.4rem;
+  }
+
+  .hero .btn {
+    min-width: 184px;
+    min-height: 52px;
+    font-size: 0.9rem;
+  }
+
+  .portfolio {
+    padding-top: 42px;
+    padding-bottom: 42px;
+  }
+
+  .portfolio-layout {
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 54px;
+  }
+
+  .portfolio-intro p:not(.eyebrow) {
+    max-width: 220px;
+    font-size: 1rem;
+  }
+
+  .filter-row {
+    gap: 14px;
+  }
+
+  .filter-pill {
+    font-size: 0.88rem;
+  }
+
+  .works-grid {
+    gap: 14px;
+  }
+
+  .work-card {
+    min-height: 254px;
+  }
+
+  .work-card-wide {
+    min-height: 226px;
+  }
+
+  .work-card img {
+    height: calc(100% - 68px);
+  }
+
+  .work-card-wide img {
+    height: calc(100% - 66px);
+  }
+
+  .work-card::before {
+    height: 76px;
+  }
+
+  .work-copy {
+    padding: 0 18px 15px;
+  }
+
+  .work-copy small {
+    font-size: 0.68rem;
+  }
+
+  .work-copy strong {
+    font-size: 1.12rem;
+  }
+
+  .work-copy em {
+    right: 18px;
+    bottom: 17px;
+    font-size: 0.64rem;
   }
 
   .services .shell,
