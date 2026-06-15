@@ -2006,9 +2006,25 @@ p {
     text-shadow: 0 2px 18px rgba(0, 0, 0, 0.82), 0 0 3px rgba(0, 0, 0, 0.42);
   }
 
+  .hero-copy .eyebrow {
+    color: #fff7e8;
+    font-size: 0.62rem;
+    letter-spacing: 0.24em;
+    text-shadow: 0 2px 12px rgba(0, 0, 0, 0.94), 0 0 10px rgba(0, 0, 0, 0.62);
+  }
+
   h1 {
-    max-width: 390px;
-    font-size: clamp(3rem, 13vw, 4rem);
+    max-width: 360px;
+    margin-bottom: 10px;
+    font-size: clamp(2.58rem, 11.4vw, 3.48rem);
+    line-height: 0.94;
+  }
+
+  .hero-text {
+    max-width: 350px;
+    margin-bottom: 14px;
+    font-size: 1.02rem;
+    line-height: 1.5;
   }
 
   .trust-row {
