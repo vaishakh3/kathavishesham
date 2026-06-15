@@ -80,6 +80,20 @@ button {
   outline-offset: 3px;
 }
 
+.brand-icon-sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.brand-icon {
+  display: block;
+  width: 1em;
+  height: 1em;
+  fill: currentColor;
+}
+
 .shell {
   width: min(100% - 108px, 1010px);
   margin-inline: auto;
@@ -448,9 +462,11 @@ p {
   box-shadow: inset 0 0 0 1px rgba(255, 225, 158, 0.03);
 }
 
-.btn-secondary::before {
+.btn .brand-icon {
+  flex: 0 0 auto;
+  width: 1rem;
+  height: 1rem;
   color: var(--gold-light);
-  content: "◉";
 }
 
 .trust-row {
@@ -1669,11 +1685,6 @@ p {
   display: none;
 }
 
-.story-brief-actions .btn-primary::before {
-  margin-right: 8px;
-  content: "◉";
-}
-
 .brief-metrics {
   display: grid;
   grid-column: 1 / -1;
@@ -1686,7 +1697,8 @@ p {
   background: rgba(224, 183, 90, 0.18);
 }
 
-.brief-metrics span {
+.brief-metrics > span,
+.metric-socials {
   position: relative;
   display: flex;
   min-height: 74px;
@@ -1704,7 +1716,8 @@ p {
     rgba(5, 6, 6, 0.62);
 }
 
-.brief-metrics span::after {
+.brief-metrics > span::after,
+.metric-socials::after {
   position: absolute;
   right: 14px;
   bottom: 12px;
@@ -1712,6 +1725,21 @@ p {
   height: 1px;
   content: "";
   background: rgba(224, 183, 90, 0.28);
+}
+
+.metric-socials {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.metric-socials small {
+  color: #b9ad9e;
+  font-size: 0.58rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-transform: uppercase;
 }
 
 .brief-metrics strong {
@@ -1776,11 +1804,20 @@ p {
   border: 1px solid rgba(224, 183, 90, 0.58);
   border-radius: 50%;
   color: var(--gold);
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0;
+  font-size: 0.92rem;
   background: rgba(198, 146, 44, 0.07);
   transition: transform 160ms ease, border-color 160ms ease, color 160ms ease;
+}
+
+.social-row-compact {
+  gap: 7px;
+  margin-top: 0;
+}
+
+.social-row-compact a {
+  width: 28px;
+  height: 28px;
+  font-size: 0.85rem;
 }
 
 .social-row a:hover {
@@ -2184,7 +2221,8 @@ p {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .brief-metrics span {
+  .brief-metrics > span,
+  .metric-socials {
     min-height: 64px;
     gap: 9px;
     padding: 12px;
@@ -2260,14 +2298,16 @@ p {
     font-size: 0.72rem;
   }
 
-  .brief-metrics span {
+  .brief-metrics > span,
+  .metric-socials {
     min-height: 52px;
     gap: 10px;
     padding: 10px 12px;
     font-size: 0.58rem;
   }
 
-  .brief-metrics span::after {
+  .brief-metrics > span::after,
+  .metric-socials::after {
     right: 12px;
     bottom: 9px;
     width: 28px;
