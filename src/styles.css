@@ -618,7 +618,7 @@ p {
 
 .works-grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
   min-width: 0;
 }
@@ -627,8 +627,7 @@ p {
   position: relative;
   display: grid;
   min-width: 0;
-  min-height: 214px;
-  grid-column: span 2;
+  min-height: 392px;
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 5px;
@@ -638,8 +637,7 @@ p {
 }
 
 .work-card-wide {
-  min-height: 184px;
-  grid-column: span 3;
+  min-height: 392px;
 }
 
 .work-card.is-hidden {
@@ -648,27 +646,27 @@ p {
 
 .work-card img {
   position: absolute;
-  inset: 0 0 auto;
+  inset: 0;
   z-index: -2;
   width: 100%;
-  height: calc(100% - 58px);
+  height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: center top;
   opacity: 0.96;
   transition: transform 280ms ease;
 }
 
 .work-card-wide img {
-  height: calc(100% - 56px);
+  height: 100%;
 }
 
 .work-card::before {
   position: absolute;
   inset: auto 0 0;
   z-index: -1;
-  height: 66px;
+  height: 45%;
   content: "";
-  background: linear-gradient(180deg, rgba(11, 11, 9, 0.82), rgba(11, 11, 9, 0.98));
+  background: linear-gradient(180deg, transparent, rgba(11, 11, 9, 0.82) 42%, rgba(11, 11, 9, 0.98));
 }
 
 .work-card:hover {
@@ -680,9 +678,32 @@ p {
   transform: scale(1.035);
 }
 
-.work-tint,
-.play-button {
+.work-tint {
   display: none;
+}
+
+.play-button {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  width: 48px;
+  height: 48px;
+  margin: auto;
+  place-items: center;
+  border: 1px solid rgba(255, 244, 220, 0.72);
+  border-radius: 50%;
+  background: rgba(3, 3, 3, 0.42);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.46);
+}
+
+.play-button::before {
+  width: 0;
+  height: 0;
+  margin-left: 4px;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 14px solid #fff7e8;
+  content: "";
 }
 
 .work-copy {
@@ -713,9 +734,7 @@ p {
 }
 
 .work-copy em {
-  position: absolute;
-  right: 14px;
-  bottom: 14px;
+  display: block;
   color: #b9ada0;
   font-size: 0.56rem;
   font-style: normal;
@@ -1194,23 +1213,23 @@ p {
   }
 
   .work-card {
-    min-height: 254px;
+    min-height: 456px;
   }
 
   .work-card-wide {
-    min-height: 226px;
+    min-height: 456px;
   }
 
   .work-card img {
-    height: calc(100% - 68px);
+    height: 100%;
   }
 
   .work-card-wide img {
-    height: calc(100% - 66px);
+    height: 100%;
   }
 
   .work-card::before {
-    height: 76px;
+    height: 45%;
   }
 
   .work-copy {
@@ -1226,8 +1245,6 @@ p {
   }
 
   .work-copy em {
-    right: 18px;
-    bottom: 17px;
     font-size: 0.64rem;
   }
 
@@ -1811,18 +1828,35 @@ p {
   }
 
   .works-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .work-card,
   .work-card-wide {
-    min-height: 250px;
+    min-height: 312px;
     grid-column: auto;
   }
 
   .work-card img,
   .work-card-wide img {
-    height: calc(100% - 58px);
+    height: 100%;
+  }
+
+  .work-copy {
+    padding: 0 11px 11px;
+  }
+
+  .work-copy small {
+    font-size: 0.56rem;
+  }
+
+  .work-copy strong {
+    font-size: 0.86rem;
+  }
+
+  .work-copy em {
+    font-size: 0.54rem;
   }
 
   .service-grid,
@@ -1920,6 +1954,6 @@ p {
 
   .work-card,
   .work-card-wide {
-    min-height: 228px;
+    min-height: 286px;
   }
 }
