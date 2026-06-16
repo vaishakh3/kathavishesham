@@ -1,6 +1,6 @@
-# Katha Vishesham
+# Kathavishesham
 
-Premium one-page website for Katha Vishesham, an AI video production and cinematic storytelling studio.
+Premium one-page website for Kathavishesham, an AI video production and cinematic storytelling studio.
 
 ## Live Site
 

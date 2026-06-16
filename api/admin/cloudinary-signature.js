@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;
   const apiKey = process.env.CLOUDINARY_API_KEY;
   const apiSecret = process.env.CLOUDINARY_API_SECRET;
-  const folder = process.env.CLOUDINARY_UPLOAD_FOLDER || "katha-vishesham/admin";
+  const folder = process.env.CLOUDINARY_UPLOAD_FOLDER || "kathavishesham/admin";
 
   if (!cloudName || !apiKey || !apiSecret) {
     res.status(500).json({ ok: false, message: "Cloudinary is not configured on the server." });
