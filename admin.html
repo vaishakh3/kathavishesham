@@ -73,7 +73,6 @@
                 <p data-panel-kicker>Manage</p>
                 <h2 data-panel-title>Portfolio reels</h2>
               </div>
-              <button type="button" data-new-item>Add new</button>
             </div>
 
             <div class="item-list" data-item-list></div>
@@ -118,11 +117,8 @@
       <label>
         Preview image
         <input name="imageUpload" type="file" accept="image/png,image/jpeg,image/webp" />
-        <small>Upload a poster image. The public Cloudinary link will be saved below.</small>
-      </label>
-      <label>
-        Preview image URL
-        <input name="image" type="url" placeholder="Uploaded image URL appears here" required />
+        <small>Upload a poster image. Existing images stay unchanged unless you upload a new one.</small>
+        <input name="image" type="hidden" />
       </label>
       <label>
         Image description

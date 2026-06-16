@@ -223,8 +223,6 @@ document.querySelectorAll("[data-tab]").forEach((button) => {
   });
 });
 
-$("[data-new-item]").addEventListener("click", startNewItem);
-
 itemList.addEventListener("click", async (event) => {
   const editButton = event.target.closest("[data-edit]");
   const deleteButton = event.target.closest("[data-delete]");
@@ -256,7 +254,7 @@ editForm.addEventListener("change", async (event) => {
   try {
     const url = await uploadImage(event.target.files[0]);
     editForm.elements.image.value = url;
-    message.textContent = "Image uploaded. The URL has been added.";
+    message.textContent = "Image uploaded and ready to save.";
   } catch (error) {
     message.textContent = error.message;
   }
@@ -271,6 +269,12 @@ editForm.addEventListener("submit", async (event) => {
   const message = $("[data-form-message]");
   message.textContent = "Saving...";
   const item = formToItem();
+
+  if (state.current === "works" && !item.image) {
+    message.textContent = "Upload a preview image before saving this reel.";
+    return;
+  }
+
   const method = state.editing ? "PUT" : "POST";
   const body = { collection: state.current, item };
   if (state.editing) body.id = state.editing;
