@@ -18,6 +18,16 @@ const collectionDescriptions = {
   pricing: (item) => `${item.duration || "Duration"} · ${item.price || "Price"}`,
 };
 
+const iconPaths = {
+  film: '<rect x="4" y="5" width="16" height="13" rx="2"></rect><path d="M8 5v13M16 5v13M4 9h16M4 14h16"></path><path d="M18.5 4.5 20 3M5.5 4.5 4 3"></path>',
+  clapper: '<path d="M4 7h16v12H4z"></path><path d="M4 7l3-4h10l3 4"></path><path d="M9 11.5v3l3-1.5-3-1.5Z"></path><path d="M6.5 7l2-4M12 7l2-4"></path>',
+  pen: '<path d="M4 20l4.4-1 9.9-9.9a2 2 0 0 0-2.8-2.8L5.6 16.2 4 20Z"></path><path d="m14.5 7.3 2.2 2.2"></path><path d="M18.5 4.5 19.4 2M20.6 7.2 23 6.4"></path>',
+  trident: '<path d="M12 3v18"></path><path d="M7 7c0 3 2 5 5 5s5-2 5-5"></path><path d="M7 7 5 5M17 7l2-2M12 3l-2 3h4l-2-3Z"></path><path d="M9 18h6"></path>',
+  rings: '<circle cx="9" cy="12" r="4.5"></circle><circle cx="15" cy="12" r="4.5"></circle><path d="M12 8.4 14 5h-4l2 3.4Z"></path>',
+  megaphone: '<path d="M4 14v-4l10-4v12L4 14Z"></path><path d="M14 9.5h3.5a2.5 2.5 0 0 1 0 5H14"></path><path d="M7 15.2 8.2 20h3.2L10 16"></path>',
+  gem: '<path d="M12 3 4.5 10.5 12 21l7.5-10.5L12 3Z"></path><path d="M8 10.5h8M12 3v18"></path><path d="M18 4.5h2M19 3.5v2"></path>',
+};
+
 const $ = (selector) => document.querySelector(selector);
 const loginPanel = $("[data-login-panel]");
 const dashboard = $("[data-dashboard]");
@@ -91,7 +101,16 @@ const itemPreviewImage = (item) => {
   if (state.current === "works" && item.image) {
     return `<img class="item-thumb" src="${escapeHtml(item.image)}" alt="" />`;
   }
-  return `<div class="item-thumb" aria-hidden="true"></div>`;
+
+  if (state.current === "services") {
+    return `
+      <div class="item-thumb service-icon-thumb" aria-hidden="true">
+        <svg viewBox="0 0 24 24">${iconPaths[item.icon] || iconPaths.film}</svg>
+      </div>
+    `;
+  }
+
+  return "";
 };
 
 const sortedCurrentItems = () =>
@@ -110,7 +129,7 @@ const renderList = () => {
   itemList.innerHTML = items
     .map(
       (item) => `
-        <article class="item-card" draggable="true" data-item-id="${escapeHtml(item.id)}">
+        <article class="item-card item-card-${state.current}" draggable="true" data-item-id="${escapeHtml(item.id)}">
           <button
             class="drag-handle"
             type="button"
@@ -233,14 +252,10 @@ const saveOrder = async (orderedIds) => {
   setStatus("Saving display order...", "Updating the Google Sheet.");
 
   try {
-    await Promise.all(
-      reordered.map((item) =>
-        requestJson("/api/admin/sheet", {
-          method: "PUT",
-          body: JSON.stringify({ collection, id: item.id, item: { sort: item.sort } }),
-        })
-      )
-    );
+    await requestJson("/api/admin/sheet", {
+      method: "PATCH",
+      body: JSON.stringify({ collection, orderedIds }),
+    });
     setStatus("Order saved", "The website will use this order.");
   } catch (error) {
     setStatus("Reorder failed", error.message, "error");

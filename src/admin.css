@@ -323,6 +323,10 @@ label small {
   transition: border-color 160ms ease, opacity 160ms ease, transform 160ms ease;
 }
 
+.item-card-pricing {
+  grid-template-columns: 30px 1fr auto;
+}
+
 .item-card.is-dragging {
   border-color: rgba(224, 183, 90, 0.68);
   opacity: 0.5;
@@ -349,12 +353,31 @@ label small {
 }
 
 .item-thumb {
+  display: grid;
+  place-items: center;
   width: 72px;
   height: 72px;
   border: 1px solid rgba(224, 183, 90, 0.18);
   border-radius: 8px;
   object-fit: cover;
   background: rgba(224, 183, 90, 0.08);
+}
+
+.service-icon-thumb {
+  color: var(--gold-light);
+  background:
+    radial-gradient(circle, rgba(224, 183, 90, 0.13), transparent 58%),
+    rgba(5, 6, 6, 0.52);
+}
+
+.service-icon-thumb svg {
+  width: 34px;
+  height: 34px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.65;
 }
 
 .item-copy {
@@ -493,9 +516,18 @@ label small {
     gap: 10px;
   }
 
+  .item-card-pricing {
+    grid-template-columns: 30px 1fr;
+  }
+
   .item-thumb {
     width: 56px;
     height: 56px;
+  }
+
+  .service-icon-thumb svg {
+    width: 27px;
+    height: 27px;
   }
 
   .item-actions {

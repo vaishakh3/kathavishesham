@@ -1,5 +1,5 @@
 import { getJsonBody, requireAdmin } from "../_lib/auth.js";
-import { createItem, deleteItem, getContent, updateItem } from "../_lib/sheets.js";
+import { createItem, deleteItem, getContent, reorderItems, updateItem } from "../_lib/sheets.js";
 import { sanitizeCollection } from "../_lib/content-schema.js";
 
 export default async function handler(req, res) {
@@ -24,12 +24,17 @@ export default async function handler(req, res) {
       return;
     }
 
+    if (req.method === "PATCH") {
+      res.status(200).json({ ok: true, items: await reorderItems(collection, body.orderedIds || []) });
+      return;
+    }
+
     if (req.method === "DELETE") {
       res.status(200).json({ ok: true, item: await deleteItem(collection, body.id) });
       return;
     }
 
-    res.setHeader("Allow", "GET,POST,PUT,DELETE");
+    res.setHeader("Allow", "GET,POST,PUT,PATCH,DELETE");
     res.status(405).json({ ok: false, message: "Method not allowed." });
   } catch (error) {
     res.status(400).json({ ok: false, message: error.message });

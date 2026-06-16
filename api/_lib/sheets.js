@@ -186,3 +186,31 @@ export const deleteItem = async (collection, id) => {
 
   return { id };
 };
+
+export const reorderItems = async (collection, orderedIds = []) => {
+  sanitizeCollection(collection);
+  if (!sheetsConfigured()) throw new Error("Google Sheets is not configured.");
+  if (!Array.isArray(orderedIds) || orderedIds.length === 0) throw new Error("No order was provided.");
+
+  const sheets = await getSheetsClient();
+  await ensureSheet(sheets, collection);
+
+  const { columns } = collections[collection];
+  const rows = await readCollection(sheets, collection, { sorted: false });
+  const existingIds = new Set(rows.map((row) => row.id));
+  const unknownId = orderedIds.find((id) => !existingIds.has(id));
+  if (unknownId) throw new Error(`Item not found: ${unknownId}`);
+
+  const order = new Map(orderedIds.map((id, index) => [id, (index + 1) * 10]));
+  const nextRows = rows.map((row) => (order.has(row.id) ? { ...row, sort: order.get(row.id) } : row));
+  const lastColumn = String.fromCharCode(64 + columns.length);
+
+  await sheets.spreadsheets.values.update({
+    spreadsheetId,
+    range: `${sheetTitleFor(collection)}!A2:${lastColumn}${nextRows.length + 1}`,
+    valueInputOption: "RAW",
+    requestBody: { values: nextRows.map((item) => itemToRow(item, columns)) },
+  });
+
+  return sortItems(nextRows);
+};
