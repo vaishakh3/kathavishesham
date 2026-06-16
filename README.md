@@ -25,6 +25,20 @@ The project uses Vite with:
 - Build command: `npm run build`
 - Output directory: `dist`
 
+## Admin Panel
+
+- Admin URL: `/admin`
+- Local admin/API dev server: `npm run dev:vercel`
+- Required env vars are listed in `.env.example`.
+
+The admin panel signs in through Vercel serverless functions, uploads preview images directly to Cloudinary with a signed upload request, and saves portfolio, service and pricing rows to Google Sheets. Until the Google Sheet env vars are connected, the website/admin use the built-in fallback content.
+
+Google Sheet tabs are created automatically when the service account has editor access to the spreadsheet:
+
+- `Works`
+- `Services`
+- `Pricing`
+
 ## Current Placeholders
 
 - Replace generated portfolio thumbnails with final original posters when available.

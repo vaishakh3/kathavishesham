@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en-IN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="theme-color" content="#080807" />
+    <title>Katha Vishesham Admin</title>
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" href="/assets/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/admin.css" />
+  </head>
+  <body>
+    <main class="admin-shell">
+      <section class="login-panel" data-login-panel>
+        <div class="login-brand">
+          <img src="/assets/brand-logo.png" width="384" height="384" alt="" />
+          <div>
+            <p>Katha Vishesham</p>
+            <h1>Studio Admin</h1>
+          </div>
+        </div>
+        <form class="login-card" data-login-form>
+          <label>
+            Username
+            <input name="username" autocomplete="username" required />
+          </label>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" required />
+          </label>
+          <button type="submit">Sign in</button>
+          <p class="form-message" data-login-message></p>
+        </form>
+      </section>
+
+      <section class="dashboard is-hidden" data-dashboard>
+        <header class="admin-header">
+          <a class="admin-brand" href="/" aria-label="Back to website">
+            <img src="/assets/brand-logo.png" width="384" height="384" alt="" />
+            <span>
+              <strong>Katha Vishesham</strong>
+              <small>Content manager</small>
+            </span>
+          </a>
+          <div class="admin-actions">
+            <a href="/" target="_blank" rel="noreferrer">View site</a>
+            <button type="button" data-logout>Sign out</button>
+          </div>
+        </header>
+
+        <div class="status-card" data-status>
+          <strong>Loading content...</strong>
+          <span>Please wait a moment.</span>
+        </div>
+
+        <div class="admin-grid">
+          <aside class="admin-nav" aria-label="Admin sections">
+            <button class="is-active" type="button" data-tab="works">Portfolio reels</button>
+            <button type="button" data-tab="services">Services</button>
+            <button type="button" data-tab="pricing">Pricing</button>
+          </aside>
+
+          <section class="content-panel">
+            <div class="panel-heading">
+              <div>
+                <p data-panel-kicker>Manage</p>
+                <h2 data-panel-title>Portfolio reels</h2>
+              </div>
+              <button type="button" data-new-item>Add new</button>
+            </div>
+
+            <div class="item-list" data-item-list></div>
+          </section>
+
+          <section class="edit-panel" data-edit-panel>
+            <div class="panel-heading compact">
+              <div>
+                <p data-form-kicker>New item</p>
+                <h2 data-form-title>Add content</h2>
+              </div>
+            </div>
+
+            <form class="edit-form" data-edit-form></form>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <template id="works-fields">
+      <label>
+        Reel title
+        <input name="title" placeholder="Example: Shiva, Reimagined" required />
+      </label>
+      <label>
+        Category
+        <select name="category">
+          <option value="mythology">Mythology</option>
+          <option value="devotional">Devotional</option>
+          <option value="wisdom">Wisdom</option>
+          <option value="character">Character Stories</option>
+        </select>
+      </label>
+      <label>
+        Views label
+        <input name="views" placeholder="Example: 785K views" />
+      </label>
+      <label>
+        Instagram / video link
+        <input name="url" type="url" placeholder="https://www.instagram.com/..." required />
+      </label>
+      <label>
+        Preview image
+        <input name="imageUpload" type="file" accept="image/png,image/jpeg,image/webp" />
+        <small>Upload a poster image. The public Cloudinary link will be saved below.</small>
+      </label>
+      <label>
+        Preview image URL
+        <input name="image" type="url" placeholder="Uploaded image URL appears here" required />
+      </label>
+      <label>
+        Image description
+        <input name="alt" placeholder="Short description for SEO/accessibility" />
+      </label>
+      <label>
+        Display order
+        <input name="sort" type="number" min="0" step="1" />
+      </label>
+      <label class="check-row">
+        <input name="active" type="checkbox" />
+        Show this on the website
+      </label>
+    </template>
+
+    <template id="services-fields">
+      <label>
+        Service name
+        <input name="title" placeholder="Example: Wedding Creatives" required />
+      </label>
+      <label>
+        Short description
+        <textarea name="description" rows="3" placeholder="One short line."></textarea>
+      </label>
+      <label>
+        Icon style
+        <select name="icon">
+          <option value="film">Film grid</option>
+          <option value="clapper">Clapper board</option>
+          <option value="pen">Story pen</option>
+          <option value="trident">Mythology trident</option>
+          <option value="rings">Wedding rings</option>
+          <option value="megaphone">Megaphone</option>
+          <option value="gem">Brand gem</option>
+        </select>
+      </label>
+      <label>
+        Display order
+        <input name="sort" type="number" min="0" step="1" />
+      </label>
+      <label class="check-row">
+        <input name="active" type="checkbox" />
+        Show this on the website
+      </label>
+    </template>
+
+    <template id="pricing-fields">
+      <label>
+        Package name
+        <input name="title" placeholder="Example: AI Video with voice-over" required />
+      </label>
+      <label>
+        Duration
+        <input name="duration" placeholder="Example: Below 1 min" />
+      </label>
+      <label>
+        Price
+        <input name="price" placeholder="Example: ₹10000" required />
+      </label>
+      <label>
+        Display order
+        <input name="sort" type="number" min="0" step="1" />
+      </label>
+      <label class="check-row">
+        <input name="featured" type="checkbox" />
+        Highlight this package
+      </label>
+      <label class="check-row">
+        <input name="active" type="checkbox" />
+        Show this on the website
+      </label>
+    </template>
+
+    <script type="module" src="/src/admin.js"></script>
+  </body>
+</html>

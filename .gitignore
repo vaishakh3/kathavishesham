@@ -5,3 +5,6 @@ dist/
 *.log
 .vercel
 assets/reference/
+.env
+.env.*
+!.env.example
