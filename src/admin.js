@@ -3,6 +3,7 @@ const state = {
   content: { works: [], services: [], pricing: [] },
   editing: null,
   configured: false,
+  dragging: null,
 };
 
 const labels = {
@@ -90,14 +91,16 @@ const itemPreviewImage = (item) => {
   if (state.current === "works" && item.image) {
     return `<img class="item-thumb" src="${escapeHtml(item.image)}" alt="" />`;
   }
-  const label = state.current === "pricing" ? item.price || "₹" : item.icon || "KV";
   return `<div class="item-thumb" aria-hidden="true"></div>`;
 };
+
+const sortedCurrentItems = () =>
+  [...(state.content[state.current] || [])].sort((a, b) => Number(a.sort || 0) - Number(b.sort || 0));
 
 const renderList = () => {
   activeTabs();
   $("[data-panel-title]").textContent = labels[state.current];
-  const items = [...(state.content[state.current] || [])].sort((a, b) => Number(a.sort || 0) - Number(b.sort || 0));
+  const items = sortedCurrentItems();
 
   if (!items.length) {
     itemList.innerHTML = `<div class="item-card"><div class="item-copy"><strong>No items yet</strong><span>Add the first one from the panel on the right.</span></div></div>`;
@@ -107,7 +110,17 @@ const renderList = () => {
   itemList.innerHTML = items
     .map(
       (item) => `
-        <article class="item-card">
+        <article class="item-card" draggable="true" data-item-id="${escapeHtml(item.id)}">
+          <button
+            class="drag-handle"
+            type="button"
+            draggable="true"
+            data-drag-handle
+            aria-label="Drag to reorder ${escapeHtml(item.title || "item")}"
+            title="Drag to reorder"
+          >
+            <span aria-hidden="true"></span>
+          </button>
           ${itemPreviewImage(item)}
           <div class="item-copy">
             <strong>${escapeHtml(item.title || "Untitled")}</strong>
@@ -155,9 +168,6 @@ const renderForm = (item) => {
 
   [...editForm.elements].forEach((field) => setFormValue(field, item[field.name]));
   if (editForm.elements.active) setFormValue(editForm.elements.active, item.active ?? true);
-  if (editForm.elements.sort && !editForm.elements.sort.value) {
-    editForm.elements.sort.value = String((state.content[state.current]?.length || 0) * 10 + 10);
-  }
 
   const actions = document.createElement("div");
   actions.className = "form-actions";
@@ -194,6 +204,48 @@ const uploadImage = async (file) => {
   const uploaded = await response.json();
   if (!response.ok) throw new Error(uploaded.error?.message || "Cloudinary upload failed.");
   return uploaded.secure_url;
+};
+
+const cardForId = (id) => [...itemList.querySelectorAll("[data-item-id]")].find((card) => card.dataset.itemId === id);
+
+const dragAfterCard = (y) => {
+  const cards = [...itemList.querySelectorAll("[data-item-id]:not(.is-dragging)")];
+  return cards.reduce(
+    (closest, card) => {
+      const box = card.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      return offset < 0 && offset > closest.offset ? { offset, card } : closest;
+    },
+    { offset: Number.NEGATIVE_INFINITY, card: null }
+  ).card;
+};
+
+const saveOrder = async (orderedIds) => {
+  const currentOrder = sortedCurrentItems().map((item) => item.id);
+  if (orderedIds.join("|") === currentOrder.join("|")) return;
+
+  const collection = state.current;
+  const byId = new Map((state.content[collection] || []).map((item) => [item.id, item]));
+  const reordered = orderedIds.map((id, index) => ({ ...byId.get(id), sort: (index + 1) * 10 }));
+
+  state.content[collection] = reordered;
+  renderList();
+  setStatus("Saving display order...", "Updating the Google Sheet.");
+
+  try {
+    await Promise.all(
+      reordered.map((item) =>
+        requestJson("/api/admin/sheet", {
+          method: "PUT",
+          body: JSON.stringify({ collection, id: item.id, item: { sort: item.sort } }),
+        })
+      )
+    );
+    setStatus("Order saved", "The website will use this order.");
+  } catch (error) {
+    setStatus("Reorder failed", error.message, "error");
+    await loadContent();
+  }
 };
 
 loginForm.addEventListener("submit", async (event) => {
@@ -244,6 +296,48 @@ itemList.addEventListener("click", async (event) => {
       setStatus("Delete failed", error.message, "error");
     }
   }
+});
+
+itemList.addEventListener("dragstart", (event) => {
+  const handle = event.target.closest("[data-drag-handle]");
+  const card = event.target.closest("[data-item-id]");
+  if (!handle || !card) {
+    event.preventDefault();
+    return;
+  }
+
+  state.dragging = card.dataset.itemId;
+  event.dataTransfer.effectAllowed = "move";
+  event.dataTransfer.setData("text/plain", state.dragging);
+  window.requestAnimationFrame(() => card.classList.add("is-dragging"));
+});
+
+itemList.addEventListener("dragover", (event) => {
+  if (!state.dragging) return;
+  event.preventDefault();
+  const draggingCard = cardForId(state.dragging);
+  if (!draggingCard) return;
+
+  const afterCard = dragAfterCard(event.clientY);
+  if (afterCard) {
+    itemList.insertBefore(draggingCard, afterCard);
+  } else {
+    itemList.append(draggingCard);
+  }
+});
+
+itemList.addEventListener("drop", async (event) => {
+  if (!state.dragging) return;
+  event.preventDefault();
+  const orderedIds = [...itemList.querySelectorAll("[data-item-id]")].map((card) => card.dataset.itemId);
+  state.dragging = null;
+  itemList.querySelectorAll(".is-dragging").forEach((card) => card.classList.remove("is-dragging"));
+  await saveOrder(orderedIds);
+});
+
+itemList.addEventListener("dragend", () => {
+  state.dragging = null;
+  itemList.querySelectorAll(".is-dragging").forEach((card) => card.classList.remove("is-dragging"));
 });
 
 editForm.addEventListener("change", async (event) => {
