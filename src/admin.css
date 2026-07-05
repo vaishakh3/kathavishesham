@@ -323,7 +323,8 @@ label small {
   transition: border-color 160ms ease, opacity 160ms ease, transform 160ms ease;
 }
 
-.item-card-pricing {
+.item-card-pricing,
+.item-card-categories {
   grid-template-columns: 30px 1fr auto;
 }
 
@@ -454,7 +455,7 @@ label small {
 
   .admin-nav {
     position: static;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
@@ -516,7 +517,8 @@ label small {
     gap: 10px;
   }
 
-  .item-card-pricing {
+  .item-card-pricing,
+  .item-card-categories {
     grid-template-columns: 30px 1fr;
   }
 

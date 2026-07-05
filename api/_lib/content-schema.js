@@ -14,6 +14,11 @@ export const collections = {
     sheetName: "Pricing",
     columns: ["id", "title", "duration", "price", "featured", "active", "sort"],
   },
+  categories: {
+    label: "Categories",
+    sheetName: "Categories",
+    columns: ["id", "title", "active", "sort"],
+  },
 };
 
 export const fallbackContent = {
@@ -206,6 +211,32 @@ export const fallbackContent = {
       featured: true,
       active: true,
       sort: 70,
+    },
+  ],
+  categories: [
+    {
+      id: "mythology",
+      title: "Mythology",
+      active: true,
+      sort: 10,
+    },
+    {
+      id: "devotional",
+      title: "Devotional",
+      active: true,
+      sort: 20,
+    },
+    {
+      id: "wisdom",
+      title: "Wisdom",
+      active: true,
+      sort: 30,
+    },
+    {
+      id: "character",
+      title: "Character Stories",
+      active: true,
+      sort: 40,
     },
   ],
 };

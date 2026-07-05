@@ -63,6 +63,7 @@
         <div class="admin-grid">
           <aside class="admin-nav" aria-label="Admin sections">
             <button class="is-active" type="button" data-tab="works">Portfolio reels</button>
+            <button type="button" data-tab="categories">Categories</button>
             <button type="button" data-tab="services">Services</button>
             <button type="button" data-tab="pricing">Pricing</button>
           </aside>
@@ -99,12 +100,7 @@
       </label>
       <label>
         Category
-        <select name="category">
-          <option value="mythology">Mythology</option>
-          <option value="devotional">Devotional</option>
-          <option value="wisdom">Wisdom</option>
-          <option value="character">Character Stories</option>
-        </select>
+        <select name="category" required data-category-select></select>
       </label>
       <label>
         Views label
@@ -177,6 +173,17 @@
       <label class="check-row">
         <input name="active" type="checkbox" />
         Show this on the website
+      </label>
+    </template>
+
+    <template id="categories-fields">
+      <label>
+        Category name
+        <input name="title" placeholder="Example: Mythology" required />
+      </label>
+      <label class="check-row">
+        <input name="active" type="checkbox" />
+        Show this filter on the website
       </label>
     </template>
 

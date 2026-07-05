@@ -104,9 +104,42 @@ const iconPaths = {
   gem: '<path d="M12 3 4.5 10.5 12 21l7.5-10.5L12 3Z"></path><path d="M8 10.5h8M12 3v18"></path><path d="M18 4.5h2M19 3.5v2"></path>',
 };
 
-const renderPortfolio = (works = []) => {
+const sortItems = (items = []) =>
+  [...items].sort((a, b) => Number(a.sort || 0) - Number(b.sort || 0) || String(a.title).localeCompare(String(b.title)));
+
+const titleFromSlug = (slug = '') =>
+  slug
+    .split('-')
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+
+const renderFilters = (categories = [], works = []) => {
+  const filters = document.querySelector('[data-filters]');
+  if (!filters) return;
+
+  const activeCategories = sortItems(categories).filter((category) => category.active !== false && category.id);
+  const derivedCategories = [...new Set(works.map((work) => work.category).filter(Boolean))].map((id, index) => ({
+    id,
+    title: titleFromSlug(id),
+    sort: (index + 1) * 10,
+  }));
+  const visibleCategories = activeCategories.length ? activeCategories : derivedCategories;
+
+  filters.innerHTML = [
+    '<button class="filter-pill is-active" type="button" data-filter="all">All Reels</button>',
+    ...visibleCategories.map(
+      (category) =>
+        `<button class="filter-pill" type="button" data-filter="${escapeHtml(category.id)}">${escapeHtml(category.title)}</button>`
+    ),
+  ].join('');
+};
+
+const renderPortfolio = (works = [], categories = []) => {
   const grid = document.querySelector('[data-portfolio-grid]');
   if (!grid || !works.length) return;
+
+  renderFilters(categories, works);
 
   grid.innerHTML = works.map((work) => `
     <a
@@ -164,7 +197,7 @@ const hydrateContent = async () => {
     if (!response.ok) return;
     const data = await response.json();
     if (!data?.content) return;
-    renderPortfolio(data.content.works);
+    renderPortfolio(data.content.works, data.content.categories);
     renderServices(data.content.services);
     renderPricing(data.content.pricing);
   } catch {

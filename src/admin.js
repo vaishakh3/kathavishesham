@@ -1,6 +1,6 @@
 const state = {
   current: "works",
-  content: { works: [], services: [], pricing: [] },
+  content: { works: [], categories: [], services: [], pricing: [] },
   editing: null,
   configured: false,
   dragging: null,
@@ -8,12 +8,14 @@ const state = {
 
 const labels = {
   works: "Portfolio reels",
+  categories: "Categories",
   services: "Services",
   pricing: "Pricing",
 };
 
 const collectionDescriptions = {
-  works: (item) => `${item.category || "reel"}${item.views ? ` · ${item.views}` : ""}`,
+  works: (item) => `${categoryTitle(item.category) || "Reel"}${item.views ? ` · ${item.views}` : ""}`,
+  categories: (item) => `Portfolio filter · ${item.id || "new"}`,
   services: (item) => item.description || "Service card",
   pricing: (item) => `${item.duration || "Duration"} · ${item.price || "Price"}`,
 };
@@ -44,6 +46,36 @@ const escapeHtml = (value) =>
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+
+const slugify = (value) =>
+  String(value || "category")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 48) || "category";
+
+const uniqueCategoryId = (title) => {
+  const base = slugify(title);
+  const existing = new Set((state.content.categories || []).map((item) => item.id));
+  if (!existing.has(base)) return base;
+
+  let index = 2;
+  while (existing.has(`${base}-${index}`)) index += 1;
+  return `${base}-${index}`;
+};
+
+const titleFromSlug = (slug = "") =>
+  slug
+    .split("-")
+    .filter(Boolean)
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+
+const categoryTitle = (id = "") => {
+  const category = (state.content.categories || []).find((item) => item.id === id);
+  return category?.title || titleFromSlug(id);
+};
 
 const setStatus = (title, message = "", tone = "") => {
   statusCard.classList.toggle("is-warning", tone === "warning");
@@ -113,8 +145,41 @@ const itemPreviewImage = (item) => {
   return "";
 };
 
-const sortedCurrentItems = () =>
-  [...(state.content[state.current] || [])].sort((a, b) => Number(a.sort || 0) - Number(b.sort || 0));
+const categoryOptions = (selected = "") => {
+  const categories = sortedItems(state.content.categories || []);
+  const visible = categories.filter((category) => category.active !== false);
+  const selectedCategory = categories.find((category) => category.id === selected);
+
+  if (selectedCategory && !visible.some((category) => category.id === selectedCategory.id)) {
+    visible.push(selectedCategory);
+  } else if (selected && !selectedCategory) {
+    visible.push({ id: selected, title: `${titleFromSlug(selected)} (missing category)`, sort: 9999 });
+  }
+
+  return visible;
+};
+
+const renderCategoryOptions = (selected = "") => {
+  const select = editForm.elements.category;
+  if (!select) return;
+
+  const options = categoryOptions(selected);
+  if (!options.length) {
+    select.innerHTML = `<option value="">Add a category first</option>`;
+    select.value = "";
+    return;
+  }
+
+  select.innerHTML = options
+    .map((category) => `<option value="${escapeHtml(category.id)}">${escapeHtml(category.title)}</option>`)
+    .join("");
+  select.value = selected || options[0].id;
+};
+
+const sortedItems = (items) =>
+  [...items].sort((a, b) => Number(a.sort || 0) - Number(b.sort || 0) || String(a.title).localeCompare(String(b.title)));
+
+const sortedCurrentItems = () => sortedItems(state.content[state.current] || []);
 
 const renderList = () => {
   activeTabs();
@@ -185,6 +250,8 @@ const renderForm = (item) => {
   const template = $(`#${state.current}-fields`);
   editForm.innerHTML = template.innerHTML;
 
+  if (state.current === "works") renderCategoryOptions(item.category);
+
   [...editForm.elements].forEach((field) => setFormValue(field, item[field.name]));
   if (editForm.elements.active) setFormValue(editForm.elements.active, item.active ?? true);
 
@@ -204,6 +271,9 @@ const formToItem = () => {
     if (!field.name || field.type === "file") return;
     item[field.name] = field.type === "checkbox" ? field.checked : field.value.trim();
   });
+  if (state.current === "categories") {
+    item.id = state.editing || uniqueCategoryId(item.title);
+  }
   return item;
 };
 
