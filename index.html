@@ -41,7 +41,13 @@
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="preload" as="image" href="/assets/hero-cinematic-wide.jpg" />
+    <link
+      rel="preload"
+      as="image"
+      href="/assets/hero-temple-desktop.webp"
+      imagesrcset="/assets/hero-temple-mobile.webp 900w, /assets/hero-temple-desktop.webp 1600w"
+      imagesizes="100vw"
+    />
     <link rel="stylesheet" href="/src/styles.css" />
     <script type="application/ld+json">
       {
@@ -273,20 +279,17 @@
     <main>
       <section id="home" class="hero section-anchor">
         <div class="hero-media" aria-hidden="true">
-          <video
-            autoplay
-            muted
-            loop
-            playsinline
-            webkit-playsinline
-            preload="auto"
-            poster="/assets/hero-cinematic-wide.jpg"
-            tabindex="-1"
-            data-hero-video
-          >
-            <source src="/assets/hero-cinematic-animated-mobile.mp4" type="video/mp4" media="(max-width: 767px)" />
-            <source src="/assets/hero-cinematic-animated.mp4" type="video/mp4" />
-          </video>
+          <picture>
+            <source media="(max-width: 767px)" srcset="/assets/hero-temple-mobile.webp" />
+            <img
+              src="/assets/hero-temple-desktop.webp"
+              alt=""
+              width="1600"
+              height="900"
+              fetchpriority="high"
+              decoding="async"
+            />
+          </picture>
           <span class="hero-vignette"></span>
         </div>
 
