@@ -368,7 +368,7 @@ p {
   inset: 0;
   z-index: -1;
   overflow: hidden;
-  background: #050606 url("/assets/hero-temple-desktop.webp") center / cover no-repeat;
+  background: #050606 url("/assets/hero-temple-wide-v3.webp") center / cover no-repeat;
 }
 
 .hero-media picture {
